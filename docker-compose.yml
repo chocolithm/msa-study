@@ -1,15 +1,53 @@
-version: '3.7'
+version: '2.1'
 services:
-  licensingservice:
-    image: ostock/licensing-service:0.0.1-SNAPSHOT
+  database:
+    image: postgres:latest
     ports:
-      - "8080:8080"
+      - "5432:5432"
     environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "ostock_dev"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/1-init.sql
+      - ./data.sql:/docker-entrypoint-initdb.d/2-data.sql
     networks:
       backend:
         aliases:
-          - "licenseservice"
+          - "database"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  configserver:
+    image: ostock/configserver:0.0.1-SNAPSHOT
+    ports:
+      - "8071:8071"
+    environment:
+      ENCRYPT_KEY: "7580a8d0d3d3d37f90b40a8bc24a6039974cd444837fc227df2b8c2881240e99"
+    networks:
+      backend:
+        aliases:
+          - "configserver"
+  licensingservice:
+    image: ostock/licensing-service:0.0.1-SNAPSHOT
+    environment:
+      PROFILE: "dev"
+      CONFIGSERVER_URI: "http://configserver:8071"
+      CONFIGSERVER_PORT: "8071"
+      DATABASESERVER_PORT: "5432"
+      ENCRYPT_KEY: "7580a8d0d3d3d37f90b40a8bc24a6039974cd444837fc227df2b8c2881240e99" # "IMSYMMETRIC"
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+
 networks:
   backend:
     driver: bridge
