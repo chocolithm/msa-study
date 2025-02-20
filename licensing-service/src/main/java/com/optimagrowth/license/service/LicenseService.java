@@ -1,19 +1,28 @@
 package com.optimagrowth.license.service;
 
 import com.optimagrowth.license.config.ServiceConfig;
+import com.optimagrowth.license.controller.LicenseController;
 import com.optimagrowth.license.model.License;
 import com.optimagrowth.license.model.Organization;
 import com.optimagrowth.license.repository.LicenseRepository;
 import com.optimagrowth.license.service.client.OrganizationDiscoveryClient;
 import com.optimagrowth.license.service.client.OrganizationFeignClient;
 import com.optimagrowth.license.service.client.OrganizationRestTemplateClient;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.TimeoutException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LicenseService {
+
+  private static final Logger logger = LoggerFactory.getLogger(LicenseController.class);
 
   @Autowired
   MessageSource messages;
@@ -96,6 +105,34 @@ public class LicenseService {
     responseMessage = String.format(messages.getMessage("license.delete.message", null, null),
         licenseId);
     return responseMessage;
+  }
 
+  @CircuitBreaker(name = "licenseService")
+  public List<License> getLicensesByOrganization(String organizationId) throws TimeoutException {
+    randomlyRunLong();
+    return licenseRepository.findByOrganizationId(organizationId);
+  }
+
+  @CircuitBreaker(name = "organizationService")
+  private Organization getOrganiztion(String organizationId) {
+    return organizationRestClient.getOrganization(organizationId);
+  }
+
+  private void randomlyRunLong() throws TimeoutException {
+    Random rand = new Random();
+    int randomNum = rand.nextInt((3 - 1) + 1) + 1;
+    if (randomNum == 3) {
+      sleep();
+    }
+  }
+
+  private void sleep() throws TimeoutException {
+    try {
+      System.out.println("Sleep");
+      Thread.sleep(5000);
+      throw new java.util.concurrent.TimeoutException();
+    } catch (InterruptedException e) {
+      logger.error(e.getMessage());
+    }
   }
 }
