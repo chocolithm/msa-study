@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: organization-service
+  profiles:
+    active: dev
+  cloud:
+    config:
+      uri: ${CONFIGSERVER_URI:http://localhost:8071}
+
