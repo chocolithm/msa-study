@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: native
+#      - native, git
+
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+#        git:
+#          uri: https://github.com/klimtever/config.git
+#          searchPaths: licensingservice
+
+server:
+  port: 8071
+encrypt:
+  key: 7580a8d0d3d3d37f90b40a8bc24a6039974cd444837fc227df2b8c2881240e99
