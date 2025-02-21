@@ -16,6 +16,20 @@ spring:
       discovery.locator:
         enabled: true
         lowerCaseServiceId: true
+      # 수동으로 routing하고 싶을 시 아래 사용
+      routes:
+        - id: organization-service
+          uri: lb://organization-service
+          predicates:
+            - Path=/organization/**
+          filters:
+            - RewritePath=/organization/(?<path>.*), /%\{path}
+        - id: licensing-service
+          uri: lb://licensing-service
+          predicates:
+            - Path=/license/**
+          filters:
+            - RewritePath=/license/(?<path>.*), /$\{path}
 
 management:
   endpoints:
