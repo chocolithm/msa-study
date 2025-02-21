@@ -16,8 +16,7 @@ cmd /c "mvn clean package -DskipTests" >> "%LOG_FILE%" 2>&1
 IF %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Config Server 빌드 실패! 오류 메시지를 확인하세요. >> "%LOG_FILE%" 2>&1
     echo [ERROR] Config Server 빌드 실패!
-    pause
-    exit /b %ERRORLEVEL%
+    goto ERROR_HANDLER
 )
 
 echo Config Server: Docker 이미지 빌드... >> "%LOG_FILE%" 2>&1
@@ -26,8 +25,7 @@ docker build --build-arg JAR_FILE=target/configserver-0.0.1-SNAPSHOT.jar -t osto
 IF %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Config Server Docker 빌드 실패! >> "%LOG_FILE%" 2>&1
     echo [ERROR] Config Server Docker 빌드 실패!
-    pause
-    exit /b %ERRORLEVEL%
+    goto ERROR_HANDLER
 )
 
 echo Config Server 실행... >> "%LOG_FILE%" 2>&1
@@ -43,8 +41,7 @@ cmd /c "mvn clean package -DskipTests" >> "%LOG_FILE%" 2>&1
 IF %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Eureka Server 빌드 실패! >> "%LOG_FILE%" 2>&1
     echo [ERROR] Eureka Server 빌드 실패!
-    pause
-    exit /b %ERRORLEVEL%
+    goto ERROR_HANDLER
 )
 
 echo Eureka Server: Docker 이미지 빌드... >> "%LOG_FILE%" 2>&1
@@ -53,14 +50,33 @@ docker build --build-arg JAR_FILE=target/eurekaserver-0.0.1-SNAPSHOT.jar -t osto
 IF %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Eureka Server Docker 빌드 실패! >> "%LOG_FILE%" 2>&1
     echo [ERROR] Eureka Server Docker 빌드 실패!
-    pause
-    exit /b %ERRORLEVEL%
+    goto ERROR_HANDLER
 )
 
 echo Eureka Server 실행... >> "%LOG_FILE%" 2>&1
 echo Eureka Server 실행...
 start /b mvn spring-boot:run >nul 2>&1
 timeout /t 10 /nobreak >nul
+
+:: Gateway Server 빌드
+cd /d "C:\Users\kangy\git\msa\gateway-server"
+echo Gateway Server: Maven 빌드 시작... >> "%LOG_FILE%" 2>&1
+echo Gateway Server: Maven 빌드 시작...
+cmd /c "mvn clean package -DskipTests" >> "%LOG_FILE%" 2>&1
+IF %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Gateway Server 빌드 실패! >> "%LOG_FILE%" 2>&1
+    echo [ERROR] Gateway Server 빌드 실패!
+    goto ERROR_HANDLER
+)
+
+echo Gateway Server: Docker 이미지 빌드... >> "%LOG_FILE%" 2>&1
+echo Gateway Server: Docker 이미지 빌드...
+docker build --build-arg JAR_FILE=target/gatewayserver-0.0.1-SNAPSHOT.jar -t ostock/gatewayserver:0.0.1-SNAPSHOT . >> "%LOG_FILE%" 2>&1
+IF %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Gateway Server Docker 빌드 실패! >> "%LOG_FILE%" 2>&1
+    echo [ERROR] Gateway Server Docker 빌드 실패!
+    goto ERROR_HANDLER
+)
 
 :: Licensing Service 빌드
 cd /d "C:\Users\kangy\git\msa\licensing-service"
@@ -70,8 +86,7 @@ cmd /c "mvn clean package -DskipTests" >> "%LOG_FILE%" 2>&1
 IF %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Licensing Service 빌드 실패! >> "%LOG_FILE%" 2>&1
     echo [ERROR] Licensing Service 빌드 실패!
-    pause
-    exit /b %ERRORLEVEL%
+    goto ERROR_HANDLER
 )
 
 echo Licensing Service: Docker 이미지 빌드... >> "%LOG_FILE%" 2>&1
@@ -80,8 +95,7 @@ docker build --build-arg JAR_FILE=target/licensing-service-0.0.1-SNAPSHOT.jar -t
 IF %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Licensing Service Docker 빌드 실패! >> "%LOG_FILE%" 2>&1
     echo [ERROR] Licensing Service Docker 빌드 실패!
-    pause
-    exit /b %ERRORLEVEL%
+    goto ERROR_HANDLER
 )
 
 :: Organization Service 빌드
@@ -92,8 +106,7 @@ cmd /c "mvn clean package -DskipTests" >> "%LOG_FILE%" 2>&1
 IF %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Organization Service 빌드 실패! >> "%LOG_FILE%" 2>&1
     echo [ERROR] Organization Service 빌드 실패!
-    pause
-    exit /b %ERRORLEVEL%
+    goto ERROR_HANDLER
 )
 
 echo Organization Service: Docker 이미지 빌드... >> "%LOG_FILE%" 2>&1
@@ -102,10 +115,15 @@ docker build --build-arg JAR_FILE=target/organization-service-0.0.1-SNAPSHOT.jar
 IF %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Organization Service Docker 빌드 실패! >> "%LOG_FILE%" 2>&1
     echo [ERROR] Organization Service Docker 빌드 실패!
-    pause
-    exit /b %ERRORLEVEL%
+    goto ERROR_HANDLER
 )
 
+goto CLEANUP
+
+:ERROR_HANDLER
+echo [ERROR] 오류 발생! 정리 작업을 수행합니다. >> "%LOG_FILE%" 2>&1
+
+:CLEANUP
 :: Eureka Server 종료
 echo Eureka Server 종료... >> "%LOG_FILE%" 2>&1
 echo Eureka Server 종료...

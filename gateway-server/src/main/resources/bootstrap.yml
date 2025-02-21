@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: gateway-server
+  cloud:
+    config:
+      uri: ${CONFIGSERVER_URI:http://localhost:8071}
