@@ -9,11 +9,7 @@ import com.optimagrowth.license.service.client.OrganizationDiscoveryClient;
 import com.optimagrowth.license.service.client.OrganizationFeignClient;
 import com.optimagrowth.license.service.client.OrganizationRestTemplateClient;
 import com.optimagrowth.license.utils.UserContextHolder;
-import io.github.resilience4j.bulkhead.annotation.Bulkhead;
-import io.github.resilience4j.bulkhead.annotation.Bulkhead.Type;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
-import io.github.resilience4j.retry.annotation.Retry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -114,9 +110,9 @@ public class LicenseService {
   }
 
   @CircuitBreaker(name = "licenseService", fallbackMethod = "buildFallbackLicenseList")
-  @RateLimiter(name = "licensesService", fallbackMethod = "buildFallbackLicenseList")
-  @Retry(name = "retryLicenseService", fallbackMethod = "buildFallbackLicenseList")
-  @Bulkhead(name = "bulkheadLicenseService", type = Type.THREADPOOL, fallbackMethod = "buildFallbackLicenseList")
+//  @RateLimiter(name = "licensesService", fallbackMethod = "buildFallbackLicenseList")
+//  @Retry(name = "retryLicenseService", fallbackMethod = "buildFallbackLicenseList")
+//  @Bulkhead(name = "bulkheadLicenseService", type = Type.THREADPOOL, fallbackMethod = "buildFallbackLicenseList")
   public List<License> getLicensesByOrganization(String organizationId) throws TimeoutException {
     randomlyRunLong();
     logger.debug("getLicensesByOrganization Correlation id: {}",

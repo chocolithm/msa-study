@@ -35,10 +35,10 @@ resilience4j.bulkhead:
 resilience4j.thread-pool-bulkhead:
   instances:
     bulkheadLicenseService:
-    maxThreadPoolSize: 1
-    coreThreadPoolSize: 1
-    queueCapacity: 1
-    keepAliveDuration: 20ms
+      maxThreadPoolSize: 1
+      coreThreadPoolSize: 1
+      queueCapacity: 1
+      keepAliveDuration: 20ms
 resilience4j.retry:
   instances:
     retryLicenseService:
@@ -46,7 +46,7 @@ resilience4j.retry:
       waitDuration: 10000
       retry-exceptions:
         - java.util.concurrent.TimeoutException
-        -
+
 resilience4j.ratelimiter:
   instances:
     licensesService:
