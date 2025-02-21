@@ -1,5 +1,8 @@
 package com.optimagrowth.license;
 
+import com.optimagrowth.license.utils.UserContextInterceptor;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,7 +29,15 @@ public class LicenseServiceApplication {
   @LoadBalanced
   @Bean
   public RestTemplate getRestTemplate() {
-    return new RestTemplate();
+    RestTemplate template = new RestTemplate();
+    List interceptors = template.getInterceptors();
+    if (interceptors == null) {
+      template.setInterceptors(Collections.singletonList(new UserContextInterceptor()));
+    } else {
+      interceptors.add(new UserContextInterceptor());
+      template.setInterceptors(interceptors);
+    }
+    return template;
   }
 
   @Bean
