@@ -76,7 +76,7 @@ services:
   licensingservice:
     image: ostock/licensing-service:0.0.1-SNAPSHOT
     ports:
-      - "8080:8080"
+      - "8180:8080"
     environment:
       PROFILE: "dev"
       CONFIGSERVER_URI: "http://configserver:8071"
@@ -111,6 +111,26 @@ services:
         condition: service_started
     networks:
       - backend
+  keycloak:
+    image: alemairebe/keycloak:14.0.0
+    restart: always
+    environment:
+      KEYCLOAK_VERSION: 6.0.1
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    volumes:
+      - ./realm-export.json:/opt/alemairebe/keycloak/realm-export.json
+    command:
+      - "-b 0.0.0.0"
+      - "-Dkeycloak.import=/opt/alemairebe/keycloak/realm-export.json"
+      - "-Dkeycloak.profile.feature.scripts=enabled"
+      - "-Dkeycloak.profile.feature.upload_scripts=enabled"
+    ports:
+      - "8080:8080"
+    networks:
+      backend:
+        aliases:
+          - "keycloak"
 
 networks:
   backend:

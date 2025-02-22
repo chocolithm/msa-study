@@ -35,8 +35,8 @@ public class OrganizationService {
     	repository.save(organization);
     }
 
-    public void delete(Organization organization){
-    	repository.deleteById(organization.getId());
+    public void delete(String organizationId){
+    	repository.deleteById(organizationId);
     }
     
     @SuppressWarnings("unused")
