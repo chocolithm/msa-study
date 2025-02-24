@@ -1,5 +1,7 @@
 package com.optimagrowth.license.config;
 
+import com.optimagrowth.license.utils.UserContextInterceptor;
+import java.util.List;
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
@@ -37,12 +39,6 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     http.csrf().disable();
   }
 
-  @Bean
-  @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-  public KeycloakRestTemplate keycloakRestTemplate() {
-    return new KeycloakRestTemplate(keycloakClientRequestFactory);
-  }
-
   @Autowired
   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
@@ -57,7 +53,15 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
   }
 
   @Bean
-  public KeycloakConfigResolver keycloakConfigResolver() {
+  public KeycloakConfigResolver KeycloakConfigResolver() {
     return new KeycloakSpringBootConfigResolver();
+  }
+
+  @Bean
+  @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+  public KeycloakRestTemplate keycloakRestTemplate() {
+    KeycloakRestTemplate restTemplate = new KeycloakRestTemplate(keycloakClientRequestFactory);
+    restTemplate.setInterceptors(List.of(new UserContextInterceptor())); // 인터셉터 추가
+    return restTemplate;
   }
 }
