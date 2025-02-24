@@ -150,6 +150,5 @@ for /f "tokens=2" %%i in ('tasklist ^| findstr "java"') do (
     )
 )
 
-echo [✔] 모든 작업이 완료되었습니다. >> "%LOG_FILE%" 2>&1
-echo [✔] 모든 작업이 완료되었습니다.
-exit /b 0
+echo 모든 작업이 완료되었습니다. >> "%LOG_FILE%" 2>&1
+echo 모든 작업이 완료되었습니다.
