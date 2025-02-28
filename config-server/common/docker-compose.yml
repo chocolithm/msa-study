@@ -130,6 +130,8 @@ services:
         condition: service_healthy
       configserver:
         condition: service_started
+      kafkaserver:
+        condition: service_started
     networks:
       - backend
 
@@ -149,6 +151,8 @@ services:
       database:
         condition: service_healthy
       configserver:
+        condition: service_started
+      kafkaserver:
         condition: service_started
     networks:
       - backend
