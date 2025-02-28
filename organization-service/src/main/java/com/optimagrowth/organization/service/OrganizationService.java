@@ -31,7 +31,7 @@ public class OrganizationService {
           ActionEnum.CREATED,
           organization.getId());
       return organization;
-  
+
     }
 
     public Organization findById(String organizationId) {

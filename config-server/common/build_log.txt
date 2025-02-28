@@ -1,4 +1,4 @@
-Build started at 2025-02-24 17:24:02.72 
+Build started at 2025-02-28 15:11:04.57 
 Config Server: Maven 빌드 시작... 
 [INFO] Scanning for projects...
 [INFO] 
@@ -38,16 +38,17 @@ Config Server: Maven 빌드 시작...
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  9.673 s
-[INFO] Finished at: 2025-02-24T17:24:15+09:00
+[INFO] Total time:  10.619 s
+[INFO] Finished at: 2025-02-28T15:11:18+09:00
 [INFO] ------------------------------------------------------------------------
 Config Server: Docker 이미지 빌드... 
 #0 building with "desktop-linux" instance using docker driver
 
 #1 [internal] load build definition from Dockerfile
-#1 transferring dockerfile: 912B 0.0s done
+#1 transferring dockerfile: 30B 0.0s
+#1 transferring dockerfile: 912B 0.1s done
 #1 WARN: FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 3)
-#1 DONE 0.1s
+#1 DONE 0.2s
 
 #2 [internal] load metadata for docker.io/library/openjdk:11-slim
 #2 ...
@@ -56,10 +57,10 @@ Config Server: Docker 이미지 빌드...
 #3 DONE 0.0s
 
 #2 [internal] load metadata for docker.io/library/openjdk:11-slim
-#2 DONE 2.2s
+#2 DONE 2.5s
 
 #4 [internal] load .dockerignore
-#4 transferring context: 2B done
+#4 transferring context: 2B 0.0s done
 #4 DONE 0.0s
 
 #5 [internal] load build context
@@ -70,17 +71,17 @@ Config Server: Docker 이미지 빌드...
 #6 DONE 0.1s
 
 #5 [internal] load build context
-#5 transferring context: 30.41MB 2.7s done
-#5 DONE 2.7s
+#5 transferring context: 30.41MB 3.0s done
+#5 DONE 3.1s
 
 #6 [build 1/3] FROM docker.io/library/openjdk:11-slim@sha256:868a4f2151d38ba6a09870cec584346a5edc8e9b71fde275eb2e0625273e2fd8
 #6 CACHED
 
 #7 [build 2/3] COPY target/configserver-0.0.1-SNAPSHOT.jar app.jar
-#7 DONE 1.3s
+#7 DONE 1.0s
 
 #8 [build 3/3] RUN mkdir -p target/dependency && (cd target/dependency; jar -xf /app.jar)
-#8 DONE 2.8s
+#8 DONE 3.9s
 
 #9 [stage-1 2/4] COPY --from=build /target/dependency/BOOT-INF/lib /app/lib
 #9 CACHED
@@ -89,19 +90,18 @@ Config Server: Docker 이미지 빌드...
 #10 CACHED
 
 #11 [stage-1 4/4] COPY --from=build /target/dependency/BOOT-INF/classes /app
-#11 CACHED
+#11 DONE 0.2s
 
 #12 exporting to image
-#12 exporting layers done
-#12 exporting manifest sha256:dab746fa8721a797a76a8b407b3ab464799536f970ef6f88a6fc89acc6f0deee 0.0s done
-#12 exporting config sha256:d1e36a4e230f0b5453d159e4ea919227c20f2d5bcf7c9f6bcd915dd54bf1cf0e 0.0s done
-#12 exporting attestation manifest sha256:9497ace3a4ed2d844e7b3155fab9a39198d2ed723422cac08117f0a5183fea56
-#12 exporting attestation manifest sha256:9497ace3a4ed2d844e7b3155fab9a39198d2ed723422cac08117f0a5183fea56 0.1s done
-#12 exporting manifest list sha256:7698bbdfd74fcc968a81649f4aa4aff6c04e57d40c8f823d6679ad8581bcfbc2
-#12 exporting manifest list sha256:7698bbdfd74fcc968a81649f4aa4aff6c04e57d40c8f823d6679ad8581bcfbc2 0.1s done
+#12 exporting layers
+#12 exporting layers 0.4s done
+#12 exporting manifest sha256:409a3a1f4a039c6e22235a2056ae2ee0ddca7e3eb7a07a37c28f967bcda668ea 0.1s done
+#12 exporting config sha256:05e8c189078887705a68a46360df64c8580577e5054d11ae600b535d787323e5 0.1s done
+#12 exporting attestation manifest sha256:e005ef3248c1f3d7a6cc21eaa192427612e82ba4fa991b76644017e1a7cf4a10 0.1s done
+#12 exporting manifest list sha256:2e4fec7699104b517cd99f62be5e9caf9274505f8c6ac5ddb30d34a12c11266a 0.1s done
 #12 naming to docker.io/ostock/configserver:0.0.1-SNAPSHOT 0.0s done
-#12 unpacking to docker.io/ostock/configserver:0.0.1-SNAPSHOT 0.0s done
-#12 DONE 0.4s
+#12 unpacking to docker.io/ostock/configserver:0.0.1-SNAPSHOT 0.1s done
+#12 DONE 1.0s
 
  [33m1 warning found (use docker --debug to expand):
 [0m - FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 3)
@@ -145,8 +145,8 @@ Eureka Server: Maven 빌드 시작...
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  14.116 s
-[INFO] Finished at: 2025-02-24T17:24:55+09:00
+[INFO] Total time:  16.792 s
+[INFO] Finished at: 2025-02-28T15:12:04+09:00
 [INFO] ------------------------------------------------------------------------
 Eureka Server: Docker 이미지 빌드... 
 #0 building with "desktop-linux" instance using docker driver
@@ -157,7 +157,7 @@ Eureka Server: Docker 이미지 빌드...
 #1 DONE 0.1s
 
 #2 [internal] load metadata for docker.io/library/openjdk:11-slim
-#2 DONE 1.0s
+#2 DONE 1.2s
 
 #3 [internal] load .dockerignore
 #3 transferring context: 2B done
@@ -171,22 +171,22 @@ Eureka Server: Docker 이미지 빌드...
 #5 DONE 0.1s
 
 #4 [internal] load build context
-#4 transferring context: 48.91MB 3.0s done
-#4 DONE 3.1s
+#4 transferring context: 48.91MB 3.5s done
+#4 DONE 3.6s
 
 #5 [build 1/3] FROM docker.io/library/openjdk:11-slim@sha256:868a4f2151d38ba6a09870cec584346a5edc8e9b71fde275eb2e0625273e2fd8
 #5 CACHED
 
 #6 [build 2/3] COPY target/eurekaserver-0.0.1-SNAPSHOT.jar app.jar
-#6 DONE 1.5s
+#6 DONE 1.9s
 
 #7 [build 3/3] RUN mkdir -p target/dependency && (cd target/dependency; jar -xf /app.jar)
-#7 DONE 2.4s
+#7 DONE 2.8s
 
-#8 [stage-1 3/4] COPY --from=build /target/dependency/META-INF /app/META-INF
+#8 [stage-1 2/4] COPY --from=build /target/dependency/BOOT-INF/lib /app/lib
 #8 CACHED
 
-#9 [stage-1 2/4] COPY --from=build /target/dependency/BOOT-INF/lib /app/lib
+#9 [stage-1 3/4] COPY --from=build /target/dependency/META-INF /app/META-INF
 #9 CACHED
 
 #10 [stage-1 4/4] COPY --from=build /target/dependency/BOOT-INF/classes /app
@@ -196,13 +196,13 @@ Eureka Server: Docker 이미지 빌드...
 #11 exporting layers done
 #11 exporting manifest sha256:9e3dc52071828719b532540670107b4fc40a9b161add8455002790187e8f0b1c 0.0s done
 #11 exporting config sha256:c16d6bbc405a698fbf796c06c70bd71aa24d61467c419b0773af006b0bc8a84d 0.0s done
-#11 exporting attestation manifest sha256:9e3d6f2cad884cee1634fd89c0e56103d1c76b723c4d8f2addbe4c3b4a9cfbec
-#11 exporting attestation manifest sha256:9e3d6f2cad884cee1634fd89c0e56103d1c76b723c4d8f2addbe4c3b4a9cfbec 0.1s done
-#11 exporting manifest list sha256:efe9c2f45e8da5a7af977cecac17fdee6e1e19c65fcc1f6f5b326adc0a243beb
-#11 exporting manifest list sha256:efe9c2f45e8da5a7af977cecac17fdee6e1e19c65fcc1f6f5b326adc0a243beb 0.1s done
-#11 naming to docker.io/ostock/eurekaserver:0.0.1-SNAPSHOT done
+#11 exporting attestation manifest sha256:8f5ca31ad96284fa7c97c3bd301d78758761264c0494edeec753d6d7ccb850a7
+#11 exporting attestation manifest sha256:8f5ca31ad96284fa7c97c3bd301d78758761264c0494edeec753d6d7ccb850a7 0.1s done
+#11 exporting manifest list sha256:264ce9418485909d063991c9abdda66ad36def861fbde070eaa1661ebc94f8c5
+#11 exporting manifest list sha256:264ce9418485909d063991c9abdda66ad36def861fbde070eaa1661ebc94f8c5 0.1s done
+#11 naming to docker.io/ostock/eurekaserver:0.0.1-SNAPSHOT 0.0s done
 #11 unpacking to docker.io/ostock/eurekaserver:0.0.1-SNAPSHOT 0.0s done
-#11 DONE 0.4s
+#11 DONE 0.3s
 
  [33m1 warning found (use docker --debug to expand):
 [0m - FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 3)
@@ -246,43 +246,44 @@ Gateway Server: Maven 빌드 시작...
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  15.245 s
-[INFO] Finished at: 2025-02-24T17:25:34+09:00
+[INFO] Total time:  19.542 s
+[INFO] Finished at: 2025-02-28T15:12:50+09:00
 [INFO] ------------------------------------------------------------------------
 Gateway Server: Docker 이미지 빌드... 
 #0 building with "desktop-linux" instance using docker driver
 
 #1 [internal] load build definition from Dockerfile
-#1 transferring dockerfile: 904B 0.0s done
-#1 WARN: FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 3)
-#1 DONE 0.1s
+#1 transferring dockerfile:
+#1 transferring dockerfile: 904B 0.1s done
+#1 DONE 0.4s
 
 #2 [internal] load metadata for docker.io/library/openjdk:11-slim
-#2 DONE 1.1s
+#2 DONE 1.3s
 
 #3 [internal] load .dockerignore
 #3 transferring context: 2B done
-#3 DONE 0.0s
+#3 DONE 0.1s
 
 #4 [internal] load build context
 #4 DONE 0.0s
 
 #5 [build 1/3] FROM docker.io/library/openjdk:11-slim@sha256:868a4f2151d38ba6a09870cec584346a5edc8e9b71fde275eb2e0625273e2fd8
+#5 resolve docker.io/library/openjdk:11-slim@sha256:868a4f2151d38ba6a09870cec584346a5edc8e9b71fde275eb2e0625273e2fd8
 #5 resolve docker.io/library/openjdk:11-slim@sha256:868a4f2151d38ba6a09870cec584346a5edc8e9b71fde275eb2e0625273e2fd8 0.1s done
 #5 DONE 0.1s
 
 #4 [internal] load build context
-#4 transferring context: 45.73MB 3.1s done
-#4 DONE 3.1s
+#4 transferring context: 45.73MB 4.3s done
+#4 DONE 4.4s
 
 #5 [build 1/3] FROM docker.io/library/openjdk:11-slim@sha256:868a4f2151d38ba6a09870cec584346a5edc8e9b71fde275eb2e0625273e2fd8
 #5 CACHED
 
 #6 [build 2/3] COPY target/gatewayserver-0.0.1-SNAPSHOT.jar app.jar
-#6 DONE 1.5s
+#6 DONE 2.2s
 
 #7 [build 3/3] RUN mkdir -p target/dependency && (cd target/dependency; jar -xf /app.jar)
-#7 DONE 2.1s
+#7 DONE 2.5s
 
 #8 [stage-1 3/4] COPY --from=build /target/dependency/META-INF /app/META-INF
 #8 CACHED
@@ -297,13 +298,13 @@ Gateway Server: Docker 이미지 빌드...
 #11 exporting layers done
 #11 exporting manifest sha256:3f3ff240a54b1f6152d70cd63eb6a3121b91ff753aeb87d809cd848c15271d5d 0.0s done
 #11 exporting config sha256:97e38c732e68bed128a711418c7a9b5fde52f0fa34637d92bf1d066cfbe5f8cc 0.0s done
-#11 exporting attestation manifest sha256:1bbbdfcd5b147a6ba1d4bfaaef535a018ad6b545f6081ebba07b693e2f446a65
-#11 exporting attestation manifest sha256:1bbbdfcd5b147a6ba1d4bfaaef535a018ad6b545f6081ebba07b693e2f446a65 0.1s done
-#11 exporting manifest list sha256:4e07b23b189abc6da2bae2bb3853e13be81e1d7b781fe1ee1532ff65a7c84c33
-#11 exporting manifest list sha256:4e07b23b189abc6da2bae2bb3853e13be81e1d7b781fe1ee1532ff65a7c84c33 0.1s done
-#11 naming to docker.io/ostock/gatewayserver:0.0.1-SNAPSHOT 0.0s done
+#11 exporting attestation manifest sha256:bd0583a0f8cf41654bd070e274ed1ecf391dcaa428ebd149087cdcdd7208d40d
+#11 exporting attestation manifest sha256:bd0583a0f8cf41654bd070e274ed1ecf391dcaa428ebd149087cdcdd7208d40d 0.1s done
+#11 exporting manifest list sha256:f9ac275cbfa8f682f6e068b715e92e0b65847f011d3512743c6997abf6c5629a
+#11 exporting manifest list sha256:f9ac275cbfa8f682f6e068b715e92e0b65847f011d3512743c6997abf6c5629a 0.1s done
+#11 naming to docker.io/ostock/gatewayserver:0.0.1-SNAPSHOT done
 #11 unpacking to docker.io/ostock/gatewayserver:0.0.1-SNAPSHOT 0.0s done
-#11 DONE 0.4s
+#11 DONE 0.3s
 
  [33m1 warning found (use docker --debug to expand):
 [0m - FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 3)
@@ -325,7 +326,7 @@ Licensing Service: Maven 빌드 시작...
 [INFO] 
 [INFO] --- compiler:3.8.1:compile (default-compile) @ licensing-service ---
 [INFO] Changes detected - recompiling the module!
-[INFO] Compiling 15 source files to C:\Users\kangy\git\msa\licensing-service\target\classes
+[INFO] Compiling 16 source files to C:\Users\kangy\git\msa\licensing-service\target\classes
 [INFO] /C:/Users/kangy/git/msa/licensing-service/src/main/java/com/optimagrowth/license/LicenseServiceApplication.java: C:\Users\kangy\git\msa\licensing-service\src\main\java\com\optimagrowth\license\LicenseServiceApplication.java uses unchecked or unsafe operations.
 [INFO] /C:/Users/kangy/git/msa/licensing-service/src/main/java/com/optimagrowth/license/LicenseServiceApplication.java: Recompile with -Xlint:unchecked for details.
 [INFO] 
@@ -348,8 +349,8 @@ Licensing Service: Maven 빌드 시작...
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  21.220 s
-[INFO] Finished at: 2025-02-24T17:26:09+09:00
+[INFO] Total time:  22.061 s
+[INFO] Finished at: 2025-02-28T15:13:30+09:00
 [INFO] ------------------------------------------------------------------------
 Licensing Service: Docker 이미지 빌드... 
 #0 building with "desktop-linux" instance using docker driver
@@ -374,39 +375,40 @@ Licensing Service: Docker 이미지 빌드...
 #5 DONE 0.1s
 
 #4 [internal] load build context
-#4 transferring context: 67.62MB 4.9s
-#4 transferring context: 69.02MB 5.0s done
+#4 transferring context: 81.58MB 5.0s
+#4 transferring context: 81.62MB 5.0s done
 #4 DONE 5.0s
 
 #5 [build 1/3] FROM docker.io/library/openjdk:11-slim@sha256:868a4f2151d38ba6a09870cec584346a5edc8e9b71fde275eb2e0625273e2fd8
 #5 CACHED
 
 #6 [build 2/3] COPY target/licensing-service-0.0.1-SNAPSHOT.jar app.jar
-#6 DONE 1.8s
+#6 DONE 4.3s
 
 #7 [build 3/3] RUN mkdir -p target/dependency && (cd target/dependency; jar -xf /app.jar)
-#7 DONE 2.8s
+#7 DONE 3.2s
 
 #8 [stage-1 2/4] COPY --from=build /target/dependency/BOOT-INF/lib /app/lib
-#8 CACHED
+#8 DONE 2.2s
 
 #9 [stage-1 3/4] COPY --from=build /target/dependency/META-INF /app/META-INF
-#9 CACHED
+#9 DONE 0.2s
 
 #10 [stage-1 4/4] COPY --from=build /target/dependency/BOOT-INF/classes /app
-#10 DONE 0.2s
+#10 DONE 0.4s
 
 #11 exporting to image
 #11 exporting layers
-#11 exporting layers 0.3s done
-#11 exporting manifest sha256:aba442b9cdf37d3607648cf272e0fbeaecb1adff5456027660f11b13dc28a7dc 0.1s done
-#11 exporting config sha256:adcbf79611e876f4c3b5cb3127556bccd4a5fbbd5b028ff0e0c61cfa59c78377 0.1s done
-#11 exporting attestation manifest sha256:b4bdbdf7ca33a627d8261b74f1b8041fb3d4800f0cc541aa7339de91884a2ac6 0.1s done
-#11 exporting manifest list sha256:52ae14c6e93c7f9ef915beb28087174dca4f01696dc300d5510281c39bfc1500
-#11 exporting manifest list sha256:52ae14c6e93c7f9ef915beb28087174dca4f01696dc300d5510281c39bfc1500 0.1s done
-#11 naming to docker.io/ostock/licensing-service:0.0.1-SNAPSHOT done
-#11 unpacking to docker.io/ostock/licensing-service:0.0.1-SNAPSHOT 0.1s done
-#11 DONE 0.9s
+#11 exporting layers 6.5s done
+#11 exporting manifest sha256:4e4ebb73f4b7a9c965071054d6532282db4122bea557bc072d4af87ab586d025 0.1s done
+#11 exporting config sha256:00696302d1676afc347c96ba8cdf7fb0f2b65e181bb6d0834ab30ffe3648fa68 0.1s done
+#11 exporting attestation manifest sha256:2b3732a1401f7a0a89884b9f50dc0dd720c4737c5aab03dcda4220c26fd695ce 0.1s done
+#11 exporting manifest list sha256:27d3d6844fde8e532e1aad2ca7635d3806f5245cc223c7498c43f28a17f4d673
+#11 exporting manifest list sha256:27d3d6844fde8e532e1aad2ca7635d3806f5245cc223c7498c43f28a17f4d673 0.1s done
+#11 naming to docker.io/ostock/licensing-service:0.0.1-SNAPSHOT 0.0s done
+#11 unpacking to docker.io/ostock/licensing-service:0.0.1-SNAPSHOT
+#11 unpacking to docker.io/ostock/licensing-service:0.0.1-SNAPSHOT 1.7s done
+#11 DONE 8.6s
 
  [33m1 warning found (use docker --debug to expand):
 [0m - FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 3)
@@ -428,7 +430,7 @@ Organization Service: Maven 빌드 시작...
 [INFO] 
 [INFO] --- compiler:3.8.1:compile (default-compile) @ organization-service ---
 [INFO] Changes detected - recompiling the module!
-[INFO] Compiling 10 source files to C:\Users\kangy\git\msa\organization-service\target\classes
+[INFO] Compiling 13 source files to C:\Users\kangy\git\msa\organization-service\target\classes
 [INFO] 
 [INFO] --- resources:3.1.0:testResources (default-testResources) @ organization-service ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
@@ -449,8 +451,8 @@ Organization Service: Maven 빌드 시작...
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  20.153 s
-[INFO] Finished at: 2025-02-24T17:26:47+09:00
+[INFO] Total time:  22.982 s
+[INFO] Finished at: 2025-02-28T15:14:26+09:00
 [INFO] ------------------------------------------------------------------------
 Organization Service: Docker 이미지 빌드... 
 #0 building with "desktop-linux" instance using docker driver
@@ -461,32 +463,33 @@ Organization Service: Docker 이미지 빌드...
 #1 DONE 0.1s
 
 #2 [internal] load metadata for docker.io/library/openjdk:11-slim
-#2 DONE 1.0s
+#2 DONE 1.5s
 
 #3 [internal] load .dockerignore
-#3 transferring context: 2B done
-#3 DONE 0.0s
+#3 transferring context: 2B 0.1s done
+#3 DONE 0.2s
 
 #4 [internal] load build context
 #4 DONE 0.0s
 
 #5 [build 1/3] FROM docker.io/library/openjdk:11-slim@sha256:868a4f2151d38ba6a09870cec584346a5edc8e9b71fde275eb2e0625273e2fd8
+#5 resolve docker.io/library/openjdk:11-slim@sha256:868a4f2151d38ba6a09870cec584346a5edc8e9b71fde275eb2e0625273e2fd8
 #5 resolve docker.io/library/openjdk:11-slim@sha256:868a4f2151d38ba6a09870cec584346a5edc8e9b71fde275eb2e0625273e2fd8 0.1s done
 #5 DONE 0.1s
 
 #4 [internal] load build context
-#4 transferring context: 39.20MB 4.9s
-#4 transferring context: 71.51MB 7.2s done
-#4 DONE 7.2s
+#4 transferring context: 64.96MB 4.8s
+#4 transferring context: 84.12MB 6.0s done
+#4 DONE 6.0s
 
 #5 [build 1/3] FROM docker.io/library/openjdk:11-slim@sha256:868a4f2151d38ba6a09870cec584346a5edc8e9b71fde275eb2e0625273e2fd8
 #5 CACHED
 
 #6 [build 2/3] COPY target/organization-service-0.0.1-SNAPSHOT.jar app.jar
-#6 DONE 1.7s
+#6 DONE 6.3s
 
 #7 [build 3/3] RUN mkdir -p target/dependency && (cd target/dependency; jar -xf /app.jar)
-#7 DONE 2.7s
+#7 DONE 4.3s
 
 #8 [stage-1 2/4] COPY --from=build /target/dependency/BOOT-INF/lib /app/lib
 #8 CACHED
@@ -500,14 +503,14 @@ Organization Service: Docker 이미지 빌드...
 #11 exporting to image
 #11 exporting layers
 #11 exporting layers 0.3s done
-#11 exporting manifest sha256:72811683fd3e6ab85bd4290da0f71c5fd30b27a75701e85de5d8e5e0d075b886 0.1s done
-#11 exporting config sha256:5c6cc0d1bfe71262cdf74f6153c635ac930961d69ffe5d0184fe446f8a3dcf79 0.1s done
-#11 exporting attestation manifest sha256:7e673530b64728226481b49addd341aac125543cea7efefffb46865cec2e2b8a 0.1s done
-#11 exporting manifest list sha256:e2e5735cd971ab1720c874e062546551d2b020810088523a0f7eb3d37c4d3883
-#11 exporting manifest list sha256:e2e5735cd971ab1720c874e062546551d2b020810088523a0f7eb3d37c4d3883 0.1s done
-#11 naming to docker.io/ostock/organization-service:0.0.1-SNAPSHOT done
+#11 exporting manifest sha256:f6da7753d6f0fb1fa38fa829e08f11106e6e5643510ad1babe32389511152301 0.1s done
+#11 exporting config sha256:4abd653cdb48e26040762950ecad7fcb93a5788b4bd1f551e09656d031849999 0.1s done
+#11 exporting attestation manifest sha256:ab8236a990be77fd600e62e56001f49180a182bc6208978183cfaf261b771b7f 0.1s done
+#11 exporting manifest list sha256:0c6decc149dac6e16b4ec8b4d18b28912e27a55ddb34bec25b560560f476db42
+#11 exporting manifest list sha256:0c6decc149dac6e16b4ec8b4d18b28912e27a55ddb34bec25b560560f476db42 0.1s done
+#11 naming to docker.io/ostock/organization-service:0.0.1-SNAPSHOT 0.0s done
 #11 unpacking to docker.io/ostock/organization-service:0.0.1-SNAPSHOT 0.1s done
-#11 DONE 0.9s
+#11 DONE 0.8s
 
  [33m1 warning found (use docker --debug to expand):
 [0m - FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 3)

@@ -24,7 +24,7 @@ spring:
           predicates:
             - Path=/organization/**
           filters:
-            - RewritePath=/organization/(?<path>.*), /%\{path}
+            - RewritePath=/organization/(?<path>.*), /$\{path}
             - RemoveRequestHeader= Cookie, Set-Cookie # 미설정 시 Gateway에서 Cookie, Set-Cookie, Authorization 전파를 자동 차단
         - id: licensing-service
           uri: lb://licensing-service
