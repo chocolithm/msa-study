@@ -161,6 +161,12 @@ services:
     image: alemairebe/keycloak:14.0.0
     restart: always
     environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: database
+      DB_PORT: 5432
+      DB_DATABASE: ostock_dev
+      DB_USER: postgres
+      DB_PASSWORD: postgres
       KEYCLOAK_VERSION: 6.0.1
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
@@ -177,6 +183,9 @@ services:
       backend:
         aliases:
           - "keycloak"
+    depends_on:
+      database:
+        condition: service_healthy
 
 networks:
   backend:
