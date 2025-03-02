@@ -20,6 +20,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 512MB
 
   configserver:
     image: ostock/configserver:0.0.1-SNAPSHOT
@@ -85,6 +89,10 @@ services:
       backend:
         aliases:
           - "zookeeper"
+    deploy:
+      resources:
+        limits:
+          memory: 512MB
 
   kafkaserver:
     image: wurstmeister/kafka:latest
@@ -95,6 +103,7 @@ services:
       - KAFKA_ADVERTISED_PORT=9092
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_CREATE_TOPICS=dresses:1:1,ratings:1:1
+      - KAFKA_HEAP_OPTS=-Xmx512m -Xms512m
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     depends_on:
@@ -103,6 +112,10 @@ services:
       backend:
         aliases:
           - "kafka"
+    deploy:
+      resources:
+        limits:
+          memory: 1GB
 
   redisserver:
     image: redis:alpine
@@ -112,6 +125,10 @@ services:
       backend:
         aliases:
           - "redis"
+    deploy:
+      resources:
+        limits:
+          memory: 256MB
 
   licensingservice:
     image: ostock/licensing-service:0.0.1-SNAPSHOT
@@ -132,8 +149,14 @@ services:
         condition: service_started
       kafkaserver:
         condition: service_started
+      redisserver:
+        condition: service_started
     networks:
       - backend
+    deploy:
+      resources:
+        limits:
+          memory: 512MB
 
   organizationservice:
     image: ostock/organization-service:0.0.1-SNAPSHOT
@@ -154,8 +177,14 @@ services:
         condition: service_started
       kafkaserver:
         condition: service_started
+      redisserver:
+        condition: service_started
     networks:
       - backend
+    deploy:
+      resources:
+        limits:
+          memory: 512MB
 
   keycloak:
     image: alemairebe/keycloak:14.0.0
@@ -179,13 +208,82 @@ services:
       - "-Dkeycloak.profile.feature.upload_scripts=enabled"
     ports:
       - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
     networks:
       backend:
         aliases:
           - "keycloak"
-    depends_on:
-      database:
-        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 512MB
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+    container_name: elasticsearch
+    environment:
+      - node.name=elasticsearch
+      - discovery.type=single-node
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9300:9300
+      - 9200:9200
+    networks:
+      backend:
+        aliases:
+          - "elasticsearch"
+    deploy:
+      resources:
+        limits:
+          memory: 1.5GB
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.7.0
+    container_name: kibana
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    networks:
+      backend:
+        aliases:
+          - "kibana"
+    deploy:
+      resources:
+        limits:
+          memory: 512MB
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.7.0
+    container_name: logstash
+    command:
+      logstash -f /etc/logstash/conf.d/logstash.conf
+    volumes:
+      - ./config:/etc/logstash/conf.d
+    ports:
+      - "5000:5000"
+    networks:
+      backend:
+        aliases:
+          - "logstash"
+    deploy:
+      resources:
+        limits:
+          memory: 512MB
+
+volumes:
+  esdata1:
+    driver: local
 
 networks:
   backend:
