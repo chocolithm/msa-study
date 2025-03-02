@@ -1,5 +1,7 @@
 package com.optimagrowth.organization.service;
 
+import brave.ScopedSpan;
+import brave.Tracer;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,12 +24,31 @@ public class OrganizationService {
   private OrganizationRepository repository;
 
   @Autowired
+  Tracer tracer;
+
+  @Autowired
   SimpleSourceBean simpleSourceBean;
 
   public Organization findById(String organizationId) {
-    Optional<Organization> opt = repository.findById(organizationId);
-    simpleSourceBean.publishOrganizationChange(ActionEnum.GET, organizationId);
-    return (opt.isPresent()) ? opt.get() : null;
+    Optional<Organization> opt = null;
+    ScopedSpan newSpan = tracer.startScopedSpan("getOrgDBCall");
+
+    try {
+      opt = repository.findById(organizationId);
+      simpleSourceBean.publishOrganizationChange(ActionEnum.GET, organizationId);
+      if (!opt.isPresent()) {
+        String message = String.format("Unable to find an organization with the organizationId %s", organizationId);
+        logger.error(message);
+        throw new IllegalArgumentException(message);
+      }
+      logger.debug("Retrieving Organization Info: " + opt.get().toString());
+    } finally {
+      newSpan.tag("perr.service", "postgres");
+      newSpan.annotate("Client received");
+      newSpan.finish();
+    }
+
+    return opt.get();
   }
 
   public Organization create(Organization organization){

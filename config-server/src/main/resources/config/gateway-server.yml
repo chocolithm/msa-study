@@ -34,8 +34,15 @@ spring:
             - RewritePath=/license/(?<path>.*), /$\{path}
             - RemoveRequestHeader= Cookie, Set-Cookie
 
+  sleuth:
+    sampler:
+      percentage: 1
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
+zipkin:
+  baseUrl: http://zipkin:9411

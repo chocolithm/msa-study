@@ -281,6 +281,25 @@ services:
         limits:
           memory: 512MB
 
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    depends_on:
+      - elasticsearch
+    environment:
+      - STORAGE_TYPE=elasticsearch
+      - "ES_HOSTS=elasticsearch:9300"
+    ports:
+      - "9411:9411"
+    networks:
+      backend:
+        aliases:
+          - "zipkin"
+    deploy:
+      resources:
+        limits:
+          memory: 512MB
+
 volumes:
   esdata1:
     driver: local
